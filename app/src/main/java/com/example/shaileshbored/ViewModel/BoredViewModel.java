@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.shaileshbored.model.Bored;
 import com.example.shaileshbored.network.RetrofitClient;
+import com.example.shaileshbored.repositories.BoredRepository;
 
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,11 +16,19 @@ public class BoredViewModel extends ViewModel {
 
 
     private static final BoredViewModel instance = new BoredViewModel();
+    private final BoredRepository boredRepository = new BoredRepository();
+
+
+
     public MutableLiveData<Bored> boredMutableLiveData = new MutableLiveData<>();
 
 
     public static BoredViewModel getInstance() {
         return instance;
+    }
+
+    public BoredRepository getBoredRepositoryInstance() {
+        return boredRepository;
     }
 
     public BoredViewModel() {
@@ -51,4 +59,7 @@ public class BoredViewModel extends ViewModel {
 
     }
 
+    public void addBoredToFavList(Bored bored) {
+        this.boredRepository.addBoredToFavList(bored);
+    }
 }

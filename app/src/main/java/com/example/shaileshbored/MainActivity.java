@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.shaileshbored.ViewModel.BoredViewModel;
 import com.example.shaileshbored.model.Bored;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvActivity;
     private Button btnAddToFav;
     private Button btnShowAnother;
+    private Bored bored = new Bored();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +38,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         this.boredViewModel.boredMutableLiveData.observe(this, new Observer<Bored>() {
             @Override
-            public void onChanged(Bored bored) {
-                if (bored != null) {
-                    tvActivity.setText(bored.getActivity());
+            public void onChanged(Bored b) {
+                if (b != null) {
+                    tvActivity.setText(b.getActivity());
+                    bored = b;
                 }
             }
         });
 
+        this.boredViewModel.getBoredRepositoryInstance().boredMutableData.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String message) {
+                if(message != null) {
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 
@@ -52,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (view.getId()) {
                 case R.id.addToFav:
                     // firestore
+                    boredViewModel.addBoredToFavList(bored);
                     break;
                 case R.id.btnShowAnother:
                     boredViewModel.fetchAllData();

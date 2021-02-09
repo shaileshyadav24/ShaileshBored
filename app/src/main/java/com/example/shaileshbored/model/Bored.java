@@ -5,6 +5,15 @@ public class Bored {
     String type;
     String link;
 
+    public Bored(String activity, String type, String link) {
+        this.activity = activity;
+        this.type = type;
+        this.link = link;
+    }
+
+    public Bored() {
+    }
+
     public String getActivity() {
         return activity;
     }
